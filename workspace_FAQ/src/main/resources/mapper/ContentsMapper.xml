@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.acep.faq.website.dao.ContentsMapper" >
+  <resultMap id="BaseResultMap" type="com.acep.faq.website.modal.Vo.Contents" >
+    <id column="cid" property="cid" jdbcType="INTEGER" />
+    <result column="faq_question" property="faqQuestion" jdbcType="VARCHAR" />
+    <result column="parent_category" property="parentCategory" jdbcType="INTEGER" />
+    <result column="child_category" property="childCategory" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.acep.faq.website.modal.Vo.Contents" extends="BaseResultMap" >
+    <result column="faq_content" property="faqContent" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    cid, faq_question, parent_category, child_category
+  </sql>
+  <sql id="Blob_Column_List" >
+    faq_content
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.acep.faq.website.modal.Vo.ContentsExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from contents
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.acep.faq.website.modal.Vo.ContentsExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from contents
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from contents
+    where cid = #{cid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from contents
+    where cid = #{cid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.acep.faq.website.modal.Vo.ContentsExample" >
+    delete from contents
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.acep.faq.website.modal.Vo.Contents" >
+    insert into contents (cid, faq_question, parent_category, 
+      child_category, faq_content)
+    values (#{cid,jdbcType=INTEGER}, #{faqQuestion,jdbcType=VARCHAR}, #{parentCategory,jdbcType=INTEGER}, 
+      #{childCategory,jdbcType=INTEGER}, #{faqContent,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.acep.faq.website.modal.Vo.Contents" >
+    insert into contents
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="cid != null" >
+        cid,
+      </if>
+      <if test="faqQuestion != null" >
+        faq_question,
+      </if>
+      <if test="parentCategory != null" >
+        parent_category,
+      </if>
+      <if test="childCategory != null" >
+        child_category,
+      </if>
+      <if test="faqContent != null" >
+        faq_content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="cid != null" >
+        #{cid,jdbcType=INTEGER},
+      </if>
+      <if test="faqQuestion != null" >
+        #{faqQuestion,jdbcType=VARCHAR},
+      </if>
+      <if test="parentCategory != null" >
+        #{parentCategory,jdbcType=INTEGER},
+      </if>
+      <if test="childCategory != null" >
+        #{childCategory,jdbcType=INTEGER},
+      </if>
+      <if test="faqContent != null" >
+        #{faqContent,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.acep.faq.website.modal.Vo.ContentsExample" resultType="java.lang.Integer" >
+    select count(*) from contents
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update contents
+    <set >
+      <if test="record.cid != null" >
+        cid = #{record.cid,jdbcType=INTEGER},
+      </if>
+      <if test="record.faqQuestion != null" >
+        faq_question = #{record.faqQuestion,jdbcType=VARCHAR},
+      </if>
+      <if test="record.parentCategory != null" >
+        parent_category = #{record.parentCategory,jdbcType=INTEGER},
+      </if>
+      <if test="record.childCategory != null" >
+        child_category = #{record.childCategory,jdbcType=INTEGER},
+      </if>
+      <if test="record.faqContent != null" >
+        faq_content = #{record.faqContent,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update contents
+    set cid = #{record.cid,jdbcType=INTEGER},
+      faq_question = #{record.faqQuestion,jdbcType=VARCHAR},
+      parent_category = #{record.parentCategory,jdbcType=INTEGER},
+      child_category = #{record.childCategory,jdbcType=INTEGER},
+      faq_content = #{record.faqContent,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update contents
+    set cid = #{record.cid,jdbcType=INTEGER},
+      faq_question = #{record.faqQuestion,jdbcType=VARCHAR},
+      parent_category = #{record.parentCategory,jdbcType=INTEGER},
+      child_category = #{record.childCategory,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.acep.faq.website.modal.Vo.Contents" >
+    update contents
+    <set >
+      <if test="faqQuestion != null" >
+        faq_question = #{faqQuestion,jdbcType=VARCHAR},
+      </if>
+      <if test="parentCategory != null" >
+        parent_category = #{parentCategory,jdbcType=INTEGER},
+      </if>
+      <if test="childCategory != null" >
+        child_category = #{childCategory,jdbcType=INTEGER},
+      </if>
+      <if test="faqContent != null" >
+        faq_content = #{faqContent,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where cid = #{cid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.acep.faq.website.modal.Vo.Contents" >
+    update contents
+    set faq_question = #{faqQuestion,jdbcType=VARCHAR},
+      parent_category = #{parentCategory,jdbcType=INTEGER},
+      child_category = #{childCategory,jdbcType=INTEGER},
+      faq_content = #{faqContent,jdbcType=LONGVARCHAR}
+    where cid = #{cid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.acep.faq.website.modal.Vo.Contents" >
+    update contents
+    set faq_question = #{faqQuestion,jdbcType=VARCHAR},
+      parent_category = #{parentCategory,jdbcType=INTEGER},
+      child_category = #{childCategory,jdbcType=INTEGER}
+    where cid = #{cid,jdbcType=INTEGER}
+  </update>
+    <!--  ページ送り　-->
+  <select id="selectByPageNum"  resultMap="BaseResultMap">
+    select * from contents    limit #{currIndex},#{pageSize}
+  </select>
+   <select id="selectAllCount" resultType="Integer">
+    select count(*) from contents
+  </select>
+</mapper>
